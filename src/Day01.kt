@@ -1,17 +1,17 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
+
+    // cc: AntonArhipov for windowed function
+    fun part1(input: List<Int>): Int {
+        return input.windowed(2).count { (a, b) -> a < b }
     }
 
-    fun part2(input: List<String>): Int {
-        return input.size
+    fun part2(input: List<Int>): Int {
+        return input.windowed(4).count { it.first() < it.last() }
     }
 
-    // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
+    val inputPart1 = readInput("Day01").asInts()
+    println(part1(inputPart1))
 
-    val input = readInput("Day01")
-    println(part1(input))
-    println(part2(input))
+    val inputPart2 = readInput("Day01").asInts()
+    println(part2(inputPart2))
 }
