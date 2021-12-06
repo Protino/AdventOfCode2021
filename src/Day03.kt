@@ -14,7 +14,7 @@ fun main() {
             oneSums = it.zip(oneSums) { a, b -> a + b }
         }
 
-        val zeroSums = oneSums.map { abs(it - input.first().length) }
+        val zeroSums = oneSums.map { abs(it - input.size) }
 
         val gamma = zeroSums.zip(oneSums) { a, b -> if (a > b) "0" else "1" }
         val epsilon = gamma.map { if (it == "0") "1" else "0" } // flipped
