@@ -1,10 +1,12 @@
 import kotlin.math.abs
 
+fun List<String>.binaryToDecimal() = this.joinToString("").toInt(2)
+
 fun main() {
 
     fun part1(input: List<String>): Int {
 
-        var oneSums = input.first().map { 0 }
+        var oneSums = input.first().map { 0 } // Total number of ones in each bit position
 
         input.map {
             it.split("").mapNotNull { it.toIntOrNull() }
@@ -12,20 +14,17 @@ fun main() {
             oneSums = it.zip(oneSums) { a, b -> a + b }
         }
 
-        val zeroSums = oneSums.map { abs(it - input.size) }
+        val zeroSums = oneSums.map { abs(it - input.first().length) }
 
         val gamma = zeroSums.zip(oneSums) { a, b -> if (a > b) "0" else "1" }
-        val epsilon = gamma.map { if (it == "0") "1" else "0" }
+        val epsilon = gamma.map { if (it == "0") "1" else "0" } // flipped
 
-        val gammaDecimal = gamma.joinToString("").toInt(2)
-        val epsilonDecimal = epsilon.joinToString("").toInt(2)
-
-        return gammaDecimal * epsilonDecimal
+        return gamma.binaryToDecimal() * epsilon.binaryToDecimal()
     }
 
     fun computeComponent(input: List<String>, bitPosition: Int = 0, criteria: (zeroes: Int, ones: Int) -> Char): Int {
         if (input.size == 1) {
-            return input.joinToString("").toInt(2)
+            return input.binaryToDecimal()
         }
 
         var zeroes = 0
@@ -46,9 +45,9 @@ fun main() {
     }
 
     fun part2(input: List<String>): Int {
-        val oxygenRating = computeComponent(input) { a, b -> if (a > b) '0' else '1' }
+        val oxygenRating = computeComponent(input) { zeroes, ones -> if (zeroes > ones) '0' else '1' }
 
-        val co2Rating = computeComponent(input) { a, b -> if (a > b) '1' else '0' }
+        val co2Rating = computeComponent(input) { zeroes, ones -> if (zeroes > ones) '1' else '0' }
 
         return oxygenRating * co2Rating
     }
